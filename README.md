@@ -19,7 +19,7 @@ A modern, responsive EMI (Equated Monthly Installment) calculator built with Nex
 
 ## 🚀 Live Demo
 
-🌐 **[View Live Demo](https://loan-o-meter-6bewobrew-aboli-kumbhalkars-projects.vercel.app/)**
+🌐 **[View Live Demo](https://loan-o-meter.vercel.app/)**
 
 ## 🛠️ Tech Stack
 
