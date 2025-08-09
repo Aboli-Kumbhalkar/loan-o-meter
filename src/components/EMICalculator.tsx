@@ -33,28 +33,28 @@ export default function EMICalculator({ onLogout }: EMICalculatorProps) {
   const [loanDataByType, setLoanDataByType] = useState<Record<LoanType, LoanTypeData>>({
     personal: {
       annualIncome: 600000,
-      loanAmount: 500000,
-      downPayment: 50000,
+      loanAmount: 100000,
+      downPayment: 10000,
       tenure: 24, // 2 years for personal loans
       interestRate: 12.0, // Higher rate for personal loans
     },
     vehicle: {
       annualIncome: 950000,
-      loanAmount: 950000,
+      loanAmount: 800000,
       downPayment: 150000,
       tenure: 60, // 5 years for vehicle loans
       interestRate: 8.5, // Moderate rate for vehicle loans
     },
     home: {
       annualIncome: 1200000,
-      loanAmount: 5000000,
-      downPayment: 1000000,
+      loanAmount: 3000000,
+      downPayment: 600000,
       tenure: 240, // 20 years for home loans
       interestRate: 7.5, // Lower rate for home loans
     },
     business: {
       annualIncome: 2000000,
-      loanAmount: 2000000,
+      loanAmount: 1500000,
       downPayment: 200000,
       tenure: 84, // 7 years for business loans
       interestRate: 10.0, // Variable rate for business loans
@@ -114,13 +114,27 @@ export default function EMICalculator({ onLogout }: EMICalculatorProps) {
 
   // Update loan data for the current loan type
   const updateLoanData = (key: keyof LoanTypeData, value: number) => {
-    setLoanDataByType(prev => ({
-      ...prev,
-      [currentLoanType]: {
+    setLoanDataByType(prev => {
+      const updatedLoanData = {
         ...prev[currentLoanType],
         [key]: value
+      };
+      
+      // If loan amount is being updated, ensure down payment doesn't exceed 80% of new loan amount
+      if (key === 'loanAmount') {
+        const maxDownPayment = value * 0.8;
+        if (updatedLoanData.downPayment > maxDownPayment) {
+          // Round down to nearest step to ensure it's valid
+          const stepSize = value < 50000 ? 1000 : 5000;
+          updatedLoanData.downPayment = Math.floor(maxDownPayment / stepSize) * stepSize;
+        }
       }
-    }));
+      
+      return {
+        ...prev,
+        [currentLoanType]: updatedLoanData
+      };
+    });
   };
 
   // Handle loan type change
@@ -211,16 +225,13 @@ export default function EMICalculator({ onLogout }: EMICalculatorProps) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-white text-xl font-semibold drop-shadow-md">Add following details</h2>
-            <div className="text-white/50 text-sm">
-              {currentLoanType.charAt(0).toUpperCase() + currentLoanType.slice(1)} Loan
-            </div>
           </div>
           
           {/* Annual Income */}
           <SliderInput
             label="Annual Income"
             value={currentLoanData.annualIncome}
-            min={100000}
+            min={10000}
             max={10000000}
             step={10000}
             format="currency"
@@ -231,9 +242,9 @@ export default function EMICalculator({ onLogout }: EMICalculatorProps) {
           <SliderInput
             label="Loan Amount"
             value={currentLoanData.loanAmount}
-            min={50000}
+            min={5000}
             max={currentLoanType === 'home' ? 20000000 : 10000000}
-            step={10000}
+            step={5000}
             format="currency"
             onChange={(value) => updateLoanData('loanAmount', value)}
           />
@@ -244,7 +255,7 @@ export default function EMICalculator({ onLogout }: EMICalculatorProps) {
             value={currentLoanData.downPayment}
             min={0}
             max={currentLoanData.loanAmount * 0.8}
-            step={5000}
+            step={currentLoanData.loanAmount < 50000 ? 1000 : 5000}
             format="currency"
             onChange={(value) => updateLoanData('downPayment', value)}
           />

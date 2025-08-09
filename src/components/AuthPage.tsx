@@ -55,6 +55,19 @@ export default function AuthPage({ onLogin }: AuthPageProps) {
           <p className="text-white/70 text-base drop-shadow-md">Sign in to access Loan-o-Meter</p>
         </div>
 
+        {/* Demo Credentials Note */}
+        <div className="bg-emerald-500/20 border border-emerald-500/30 rounded-lg p-4 mb-6 backdrop-blur-sm">
+          <div className="flex items-center space-x-2 mb-2">
+            <div className="w-4 h-4 bg-emerald-400 rounded-full flex items-center justify-center">
+              <span className="text-xs text-emerald-900 font-bold">i</span>
+            </div>
+            <p className="text-emerald-200 text-sm font-medium">Demo Credentials</p>
+          </div>
+          <p className="text-emerald-100 text-sm">
+            Use <span className="font-semibold bg-emerald-600/30 px-2 py-0.5 rounded">admin</span> for both username and password
+          </p>
+        </div>
+
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Username Field */}
