@@ -4,7 +4,7 @@
 
 A modern, responsive EMI (Equated Monthly Installment) calculator built with Next.js 15, featuring a sleek glassmorphism design and support for multiple loan types.
 
-![Loan-o-Meter Preview](https://via.placeholder.com/800x600/000000/FFFFFF?text=Loan-o-Meter+Preview)
+![Loan-o-Meter Preview](Preview.png)
 
 ## ✨ Features
 
